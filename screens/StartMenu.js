@@ -1,6 +1,7 @@
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
+import colors from "../constants/colors";
 
 const StartMenu = ({textValue}) => {
   const [inputNumber, setInputNumber] = useState("");
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 100,
     marginHorizontal: 24,
-    backgroundColor: "#4e0329",
+    backgroundColor: colors.primary1,
     borderRadius: 8,
     elevation: 4, //style bayangan untuk android
     shadowColor: "black", //style shadow untuk bayangan pada IOS
@@ -68,9 +69,9 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     fontSize: 32,
-    borderBottomColor: "#DDB52F",
+    borderBottomColor: colors.primary2,
     borderBottomWidth: 2,
-    color: "#DDB52F",
+    color: colors.primary2,
     marginVertical: 8,
     fontWeight: "bold",
     textAlign: "center",
