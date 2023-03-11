@@ -1,6 +1,6 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import {Ionicons} from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons";
 import PrimaryButton from "../components/PrimaryButton";
 import Title from "../components/Title";
 import Subtitle from "../components/Subtitle";
@@ -9,24 +9,43 @@ import Card from "../components/Card";
 
 let minimum = 1;
 let maximum = 99;
-const Game = ({ textValue , onGameOver}) => {
-  const [guess, setGuess] = useState(randomNumber(1, 99));
-  const [index, setIndex] = useState(0);
 
+const Game = ({ textValue, onGameOver }) => {
+  const [guess, setGuess] = useState(randomNumber(1, 99));
+  const [index, setIndex] = useState(1);
+  const [detailGuess, setDetailGuess] = useState([guess]);
+  
   useEffect(() => {
     console.log("Answer : " + textValue + ", Guess : " + guess);
     console.log("Minimum : " + minimum + ", Maximum : " + maximum);
     if (guess == textValue) {
       console.log("Ketemu");
       console.log(index);
-      onGameOver(index,guess);
+      onGameOver(index, guess);
     }
   }, [guess, textValue, onGameOver]);
+
+  useEffect(() => {
+    minimum = 1;
+    maximum = 99;
+  }, []); // empty [] will trigger only when the UI rendered the first time not every update.
 
   function randomNumber(min, max) {
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
 
     return randomNum;
+  }
+
+  function rapeatitiveGuess(newest){
+    if(guess == newest){
+      newest=randomNumber(minimum,maximum);
+      rapeatitiveGuess(newest);
+    }
+    else{
+      setGuess(newest);
+      setDetailGuess((prevGuess) => {return [...prevGuess, newest]});
+    
+    }
   }
 
   function givingHint(status) {
@@ -45,10 +64,12 @@ const Game = ({ textValue , onGameOver}) => {
     if (status === "higher") {
       minimum = guess;
     }
-    setGuess(randomNumber(minimum, maximum));
+    let newest=guess;
+    rapeatitiveGuess(newest);
     setIndex((currentValue) => {
       return currentValue + 1;
     });
+    //setDetailGuess((prevDetailGuess) => {[...prevDetailGuess, guess]});
   }
 
   return (
@@ -71,7 +92,7 @@ const Game = ({ textValue , onGameOver}) => {
         </View>
       </Card>
       <View>
-        <Text>Log guesses</Text>
+        <FlatList data={detailGuess} renderItem={(itemData) => <Text>{itemData.item}</Text>} keyExtractor={(item, index) => {return index}} />
       </View>
     </View>
   );

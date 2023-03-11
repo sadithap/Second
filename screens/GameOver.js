@@ -3,10 +3,15 @@ import React from "react";
 import Title from "../components/Title";
 import colors from "../constants/colors";
 import PrimaryButton from "../components/PrimaryButton";
-const GameOver = ({ guess , total }) => {
+const GameOver = ({ guess , total , restart }) => {
 
   console.log(guess);
   console.log(total);
+  
+function onRestart(){
+  restart();
+}
+
   return (
     <View style={styles.rootContainer}>
       <Title>GAME OVER</Title>
@@ -21,7 +26,7 @@ const GameOver = ({ guess , total }) => {
         guessing number <Text style={styles.subdetail}>{total}</Text>.
       </Text>
       <View>
-        <PrimaryButton>Restart</PrimaryButton>
+        <PrimaryButton onpressed={onRestart} >Restart</PrimaryButton>
       </View>
     </View>
 

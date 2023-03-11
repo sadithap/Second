@@ -16,7 +16,7 @@ import AppLoading from "expo-app-loading";
 export default function App() {
   const [textInput, setInputInput] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  const [totalGuess, setTotalGuess] = useState("");
+  const [totalGuess, setTotalGuess] = useState(0);
   const [guess, setGuess] = useState("");
   
   const [isLoading] = useFonts({
@@ -36,6 +36,9 @@ export default function App() {
 
   function restart(){
     setGameOver(false);
+    setInputInput(null);
+    setTotalGuess(0);
+    setGuess(null);
     screen =<StartMenu textValue={changeText} />
   }
 
@@ -51,7 +54,7 @@ export default function App() {
 
   if (gameOver && textInput) {
     console.log(totalGuess);
-    screen = <GameOver total={totalGuess} guess={guess} />;
+    screen = <GameOver total={totalGuess} guess={guess} restart={restart}/>;
   }
 
   return (
