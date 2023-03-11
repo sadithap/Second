@@ -1,21 +1,27 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import {Ionicons} from "@expo/vector-icons"
 import PrimaryButton from "../components/PrimaryButton";
 import Title from "../components/Title";
 import Subtitle from "../components/Subtitle";
 import colors from "../constants/colors";
+import Card from "../components/Card";
 
 let minimum = 1;
 let maximum = 99;
-const Game = ({ textValue }) => {
-  const [guess, setGuess] = useState(randomNumber(minimum, maximum));
+const Game = ({ textValue , onGameOver}) => {
+  const [guess, setGuess] = useState(randomNumber(1, 99));
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     console.log("Answer : " + textValue + ", Guess : " + guess);
     console.log("Minimum : " + minimum + ", Maximum : " + maximum);
-    if (guess == textValue) console.log("Ketemu");
-  });
+    if (guess == textValue) {
+      console.log("Ketemu");
+      console.log(index);
+      onGameOver(index,guess);
+    }
+  }, [guess, textValue, onGameOver]);
 
   function randomNumber(min, max) {
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -45,51 +51,25 @@ const Game = ({ textValue }) => {
     });
   }
 
-  function pressLow() {
-    if (guess < textValue) {
-      Alert.alert("Don't lie!", "Be honest", [
-        { text: "OK", style: "destructive" },
-      ]);
-      return;
-    }
-    setGuess(randomNumber(minimum, guess));
-    setIndex((currentValue) => {
-      return currentValue + 1;
-    });
-    console.log("Answer : " + textValue + ", Guess : " + guess);
-    console.log("Minimum : " + minimum + ", Maximum : " + maximum);
-  }
-
-  function pressHigh() {
-    if (guess > textValue) {
-      Alert.alert("Don't lie!", "Be honest", [
-        { text: "OK", style: "destructive" },
-      ]);
-      return;
-    }
-    setGuess(randomNumber(guess, maximum));
-    setIndex((currentValue) => {
-      return currentValue + 1;
-    });
-    console.log("Answer : " + textValue + ", Guess : " + guess);
-    console.log("Minimum : " + minimum + ", Maximum : " + maximum);
-  }
-
   return (
     <View style={styles.screen}>
       <Subtitle>Opponent Guess</Subtitle>
       <Title>{guess}</Title>
-      <View style={styles.guess}>
+      <Card>
         <Text style={styles.texthighlow}>Higher or Lower</Text>
         <View style={styles.buttonsLayout}>
           <View style={styles.buttonLayout}>
-            <PrimaryButton onpressed={givingHint.bind(this, "higher")}>+</PrimaryButton>
+            <PrimaryButton onpressed={givingHint.bind(this, "higher")}>
+              <Ionicons name="md-add" size={24} color="white"></Ionicons>
+            </PrimaryButton>
           </View>
           <View style={styles.buttonLayout}>
-            <PrimaryButton onpressed={givingHint.bind(this, "lower")}>-</PrimaryButton>
+            <PrimaryButton onpressed={givingHint.bind(this, "lower")}>
+              <Ionicons name="md-remove" size={24} color="white"></Ionicons>
+            </PrimaryButton>
           </View>
         </View>
-      </View>
+      </Card>
       <View>
         <Text>Log guesses</Text>
       </View>
@@ -103,20 +83,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  guess: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    marginHorizontal: 24,
-    marginVertical: 12,
-    backgroundColor: colors.primary1,
-    borderRadius: 8,
-    elevation: 4, //style bayangan untuk android
-    shadowColor: "black", //style shadow untuk bayangan pada IOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.25,
-  },
   buttonsLayout: {
     flexDirection: "row",
   },
@@ -125,5 +91,6 @@ const styles = StyleSheet.create({
   },
   texthighlow: {
     color: colors.primary2,
+    fontFamily: "open-sans-bold",
   },
 });

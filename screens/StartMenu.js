@@ -2,8 +2,9 @@ import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import colors from "../constants/colors";
+import Card from "../components/Card";
 
-const StartMenu = ({textValue}) => {
+const StartMenu = ({ textValue }) => {
   const [inputNumber, setInputNumber] = useState("");
 
   function textChange(textValue) {
@@ -28,7 +29,7 @@ const StartMenu = ({textValue}) => {
   }
 
   return (
-    <View style={styles.inputContainer}>
+    <Card>
       <TextInput
         style={styles.numberInput}
         maxLength={2}
@@ -44,27 +45,13 @@ const StartMenu = ({textValue}) => {
           <PrimaryButton onpressed={confirmText}>Confirm</PrimaryButton>
         </View>
       </View>
-    </View>
+    </Card>
   );
 };
 
 export default StartMenu;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    marginTop: 100,
-    marginHorizontal: 24,
-    backgroundColor: colors.primary1,
-    borderRadius: 8,
-    elevation: 4, //style bayangan untuk android
-    shadowColor: "black", //style shadow untuk bayangan pada IOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.25,
-  },
   numberInput: {
     height: 50,
     width: 50,
